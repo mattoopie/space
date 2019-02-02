@@ -13,7 +13,7 @@ export function setupSettingsHandlers() {
             settingsForm.onsubmit = (event) => {
                 event.preventDefault();
                 saveSettings();
-                settings.hidden = !settings.hidden;
+                // settings.hidden = true;
             }
         }
     }
