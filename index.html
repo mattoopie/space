@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="EN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Space</title>
+</head>
+<body>
+<div class="menu" hidden id="settings">
+    <h1>Settings</h1>
+    <form id="settingsForm" action="#">
+        <label for="meteorcolor">Meteor color</label>
+        <br>
+        <input type="color" name="meteorcolor" id="meteorcolor">
+        <br>
+        <label for="numberofmeteors">Number of meteors</label>
+        <br>
+        <input type="number" min="0" max="10000" name="numberofmeteors" id="numberofmeteors">
+        <br>
+        <label for="meteorspeed">Meteor speed</label>
+        <br>
+        <input type="number" min="0" max="100" name="meteorspeed" id="meteorspeed">
+        <br>
+        <label for="spacecolor">Space color</label>
+        <br>
+        <input type="color" name="spacecolor" id="spacecolor">
+        <br>
+        <button type="submit">Save</button>
+    </form>
+</div>
+<script type="text/javascript" src="bundle.js"></script></body>
+</html>
