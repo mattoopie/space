@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+</head>
+<body>
+<div class="menu" hidden id="settings">
+    <h1>Settings</h1>
+    <form id="settingsForm" action="#">
+        <label for="meteorcolor">Meteor color</label>
+        <br>
+        <input type="color" name="meteorcolor" id="meteorcolor">
+        <br>
+        <label for="numberofmeteors">Number of meteors</label>
+        <br>
+        <input type="number" min="0" max="10000" name="numberofmeteors" id="numberofmeteors">
+        <br>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+</body>
+</html>

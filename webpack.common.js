@@ -1,12 +1,11 @@
 const path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     mode: 'development',
-    entry: './src/index.ts',
-    devtool: 'inline-source-map',
-    devServer: {
-        contentBase: './dist'
+    entry: {
+        main: './src/index.ts'
     },
     module: {
         rules: [
@@ -14,6 +13,10 @@ module.exports = {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
                 exclude: /node_modules/
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
             }
         ]
     },
@@ -25,8 +28,10 @@ module.exports = {
         path: path.resolve(__dirname, 'dist')
     },
     plugins: [
+        new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
-            template: 'index.html'
+            title: "Space",
+            template: 'src/index.html'
         })
     ]
 };

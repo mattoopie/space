@@ -8,14 +8,14 @@ export class Meteor implements IObject {
 
     object: Mesh;
 
-    constructor() {
+    constructor(color: number) {
         const geometry = new SphereGeometry(1, 8, 8);
-        const material = new MeshPhongMaterial({color: 0xffffff});
+        const material = new MeshPhongMaterial({color: color});
         this.object = new Mesh(geometry, material);
     }
 
     update() {
-        this.object.position.z += 1.5;
+        this.object.position.z += 5;
     }
 
     setPosition(position: Vector3) {

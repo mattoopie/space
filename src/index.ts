@@ -1,21 +1,40 @@
 import {Scene} from "three/src/scenes/Scene";
 import {PerspectiveCamera} from "three/src/cameras/PerspectiveCamera";
 import {WebGLRenderer} from "three/src/renderers/WebGLRenderer";
-import {Game} from "./game";
+import {Space} from "./space/space";
+import './style.css';
+import {setupSettingsHandlers, SpaceSettings} from "./settings/settings";
 
-const scene = new Scene();
-const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const numberOfMeteors = 100;
-const game = new Game(scene, camera, numberOfMeteors);
+const scene = new Scene();
+const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+const settings = new SpaceSettings(
+    200,
+    0xffffff
+);
+const space = new Space(scene, camera, settings);
 
 function animate() {
     requestAnimationFrame(animate);
-    game.update();
+    space.update();
     renderer.render(scene, camera);
 }
 
 animate();
+setupSettingsHandlers();
+
+export function getSpace(): Space {
+    return space;
+}
+
+window.addEventListener('resize', onWindowResize, false);
+
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
