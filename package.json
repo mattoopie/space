@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --config webpack.prod.js",
     "start": "webpack-dev-server --open --config webpack.dev.js",
-    "deploy": "npm run build && surge ./dist marc.gq"
+    "deploy": "npm run build && surge ./dist marc.gq && gh-pages -d dist"
   },
   "dependencies": {
     "lodash": "^4.17.11",
@@ -19,6 +19,7 @@
     "@types/webpack-env": "^1.13.7",
     "clean-webpack-plugin": "^1.0.1",
     "css-loader": "^2.1.0",
+    "gh-pages": "^2.0.1",
     "html-webpack-plugin": "^3.2.0",
     "style-loader": "^0.23.1",
     "ts-loader": "^5.3.3",
