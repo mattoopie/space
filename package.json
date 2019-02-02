@@ -5,11 +5,12 @@
   "private": true,
   "scripts": {
     "build": "webpack --config webpack.prod.js",
-    "start": "webpack-dev-server --open --config webpack.dev.js"
+    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "deploy": "npm run build && surge ./dist marc.gq"
   },
   "dependencies": {
     "lodash": "^4.17.11",
-    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "random-spherical": "^1.1.2",
     "three": "^0.101.1",
     "tslint-config-airbnb": "^5.11.1"
   },

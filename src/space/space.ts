@@ -6,69 +6,82 @@ import {Vector3} from "three/src/math/Vector3";
 import {SpaceSettings} from "../settings/settings";
 import {flatMap} from "lodash";
 import {Color} from "three/src/math/Color";
+import {_Math} from "three/src/math/Math";
+import randFloat = _Math.randFloat;
+
+const randomSpherical = require('random-spherical/object')(Math.random, Vector3);
 
 export class Space {
 
     private meteors: Meteor[] = [];
     private lightManager: LightManager;
+    private readonly movement: Vector3;
+    private rotateX = Math.PI / 5000;
+    private rotateY = Math.PI / 2000;
+    private rotateZ = Math.PI / 800;
+
+    static readonly MAX_DISTANCE = 3000;
 
     constructor(private scene: Scene, private camera: Camera, private settings: SpaceSettings) {
         this.lightManager = new LightManager(scene);
         this.lightManager.addLights();
         this.scene.background = new Color(settings.spaceColor);
-
-        this.loadMeteors();
+        this.movement = new Vector3(0, 0, -this.settings.meteorSpeed);
+        this.loadMeteors(settings.numberOfMeteors);
     }
 
     update() {
+        this.camera.getWorldDirection(this.movement);
+        this.camera.position.add(this.movement.setLength(this.settings.meteorSpeed));
+        this.camera.rotateX(this.rotateX);
+        this.camera.rotateY(this.rotateY);
+        this.camera.rotateZ(this.rotateZ);
+
+        let distance = 0;
         this.meteors.forEach(meteor => {
-            meteor.update();
-            if (meteor.object.position.z > 1000) {
-                this.resetMeteor(meteor);
+            // meteor.update();
+            distance = meteor.object.position.distanceTo(this.camera.position);
+            if (distance > Space.MAX_DISTANCE) {
+                this.resetMeteor(meteor, distance);
             }
         });
     }
 
     useSettings(settings: SpaceSettings) {
+        this.loadMeteors(settings.numberOfMeteors - this.settings.numberOfMeteors);
         this.settings = settings;
-        this.reset();
+        this.scene.background = new Color(this.settings.spaceColor);
+        this.meteors.forEach((meteor) => meteor.setColor(this.settings.meteorColor));
     }
 
     getSettings(): SpaceSettings {
         return this.settings;
     }
 
-    private reset() {
-        this.removeMeteorsFromScene();
-        this.meteors = [];
-        this.loadMeteors();
-        this.scene.background = new Color(this.settings.spaceColor);
-    }
-
-    private loadMeteors() {
-        for (let i = 0; i < this.settings.numberOfMeteors; i++) {
-            this.addNewMeteor();
+    private loadMeteors(numberOfMeteors: number) {
+        if (numberOfMeteors > 0) {
+            for (let i = 0; i < numberOfMeteors; i++) {
+                this.addNewMeteor();
+            }
+        } else {
+            const toBeRemoved = this.meteors.slice(0, -numberOfMeteors);
+            this.scene.remove(...flatMap(toBeRemoved, meteor => meteor.object));
+            this.meteors.splice(0, -numberOfMeteors);
         }
     }
-
-    private removeMeteorsFromScene() {
-        this.scene.remove(...flatMap(this.meteors, meteor => meteor.object))
-    }
-
     private addNewMeteor() {
-        let meteorPosition = new Vector3(this.calcX(), this.calcY(), this.calcZ());
-        let meteor = new Meteor(this.settings.meteorColor, this.settings.meteorSpeed);
+        let meteorPosition = randomSpherical().setLength(randFloat(50, Space.MAX_DISTANCE - 0.1)).add(this.camera.position);
+        let meteor = new Meteor(this.settings.meteorColor, this.settings.meteorSpeed, this.calcRadius());
         this.meteors.push(meteor);
         this.scene.add(meteor.object);
         meteor.setPosition(meteorPosition);
     }
 
-    private resetMeteor(meteor: Meteor) {
-        let meteorPosition = new Vector3(this.calcX(), this.calcY(), -1000);
-        meteor.setPosition(meteorPosition);
+    private resetMeteor(meteor: Meteor, distance: number) {
+        // let meteorPosition = new Vector3(this.calcX(), this.calcY(), -1000);
+        let meteorPosition = meteor.object.position.clone().sub(this.camera.position);
+        meteor.setPosition(meteorPosition.normalize().multiplyScalar(-distance).add(this.camera.position));
     }
 
-    private calcX = () => Math.random() * window.innerWidth - window.innerWidth / 2;
-    private calcY = () => Math.random() * window.innerHeight - window.innerHeight / 2;
-    private calcZ = () => Math.random() * 2000 - 1000;
+    private calcRadius = () => Math.random() * 3 + 0.5;
 }
