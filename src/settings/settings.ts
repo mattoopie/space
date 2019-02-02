@@ -22,7 +22,8 @@ export function setupSettingsHandlers() {
 function loadSettings() {
     loadMeteorColorInput();
     loadNumberOfMeteorsInput();
-    loadSpaceColorInput()
+    loadMeteorSpeedInput();
+    loadSpaceColorInput();
 }
 
 function loadMeteorColorInput() {
@@ -43,6 +44,13 @@ function loadNumberOfMeteorsInput() {
     }
 }
 
+function loadMeteorSpeedInput() {
+    const meteorSpeedInput = <HTMLInputElement>document.getElementById("meteorspeed");
+    if (meteorSpeedInput) {
+        meteorSpeedInput.value = getSpace().getSettings().meteorSpeed.toString();
+    }
+}
+
 function loadSpaceColorInput() {
     const spaceColorInput = <HTMLInputElement>document.getElementById("spacecolor");
     if (spaceColorInput) {
@@ -58,6 +66,7 @@ function saveSettings() {
     const settings = new SpaceSettings(
         getMeteorColor(),
         getNumberOfMeteors(),
+        getMeteorSpeed(),
         getSpaceColor()
     );
     const space = getSpace();
@@ -75,9 +84,17 @@ function getMeteorColor(): number {
 function getNumberOfMeteors(): number {
     const numberOfMeteorsInput = <HTMLInputElement>document.getElementById("numberofmeteors");
     if (numberOfMeteorsInput) {
-        return <number><unknown>numberOfMeteorsInput.value;
+        return parseInt(numberOfMeteorsInput.value);
     }
     return 100;
+}
+
+function getMeteorSpeed(): number {
+    const meteorSpeedInput = <HTMLInputElement>document.getElementById("meteorspeed");
+    if (meteorSpeedInput) {
+        return parseInt(meteorSpeedInput.value);
+    }
+    return 10;
 }
 
 function getSpaceColor(): number {
@@ -91,6 +108,7 @@ function getSpaceColor(): number {
 export class SpaceSettings {
     constructor(public meteorColor: number,
                 public numberOfMeteors: number,
+                public meteorSpeed: number,
                 public spaceColor: number) {
     }
 }

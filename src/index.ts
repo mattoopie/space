@@ -15,6 +15,7 @@ const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight,
 const settings = new SpaceSettings(
     0xffffff,
     100,
+    10,
     0x000000
 );
 const space = new Space(scene, camera, settings);

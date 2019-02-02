@@ -31,7 +31,6 @@ export class Space {
 
     useSettings(settings: SpaceSettings) {
         this.settings = settings;
-        console.log(settings);
         this.reset();
     }
 
@@ -58,7 +57,7 @@ export class Space {
 
     private addNewMeteor() {
         let meteorPosition = new Vector3(this.calcX(), this.calcY(), this.calcZ());
-        let meteor = new Meteor(this.settings.meteorColor);
+        let meteor = new Meteor(this.settings.meteorColor, this.settings.meteorSpeed);
         this.meteors.push(meteor);
         this.scene.add(meteor.object);
         meteor.setPosition(meteorPosition);
