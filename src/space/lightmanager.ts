@@ -8,7 +8,7 @@ export class LightManager {
     }
 
     addLights() {
-        const ambientLight = new AmbientLight(0x444444);
+        const ambientLight = new AmbientLight(0xffffff);
         this.scene.add(ambientLight);
         const hemisphereLight = new HemisphereLight(0x444444, 0x000000);
         this.scene.add(hemisphereLight);

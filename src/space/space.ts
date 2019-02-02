@@ -5,6 +5,7 @@ import {LightManager} from "./lightmanager";
 import {Vector3} from "three/src/math/Vector3";
 import {SpaceSettings} from "../settings/settings";
 import {flatMap} from "lodash";
+import {Color} from "three/src/math/Color";
 
 export class Space {
 
@@ -14,6 +15,7 @@ export class Space {
     constructor(private scene: Scene, private camera: Camera, private settings: SpaceSettings) {
         this.lightManager = new LightManager(scene);
         this.lightManager.addLights();
+        this.scene.background = new Color(settings.spaceColor);
 
         this.loadMeteors();
     }
@@ -29,6 +31,7 @@ export class Space {
 
     useSettings(settings: SpaceSettings) {
         this.settings = settings;
+        console.log(settings);
         this.reset();
     }
 
@@ -40,6 +43,7 @@ export class Space {
         this.removeMeteorsFromScene();
         this.meteors = [];
         this.loadMeteors();
+        this.scene.background = new Color(this.settings.spaceColor);
     }
 
     private loadMeteors() {
@@ -65,7 +69,7 @@ export class Space {
         meteor.setPosition(meteorPosition);
     }
 
-    private calcX = () => Math.random() * 1400 - 700;
-    private calcY = () => Math.random() * 700 - 350;
+    private calcX = () => Math.random() * window.innerWidth - window.innerWidth / 2;
+    private calcY = () => Math.random() * window.innerHeight - window.innerHeight / 2;
     private calcZ = () => Math.random() * 2000 - 1000;
 }

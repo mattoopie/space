@@ -20,30 +20,77 @@ export function setupSettingsHandlers() {
 }
 
 function loadSettings() {
+    loadMeteorColorInput();
+    loadNumberOfMeteorsInput();
+    loadSpaceColorInput()
+}
+
+function loadMeteorColorInput() {
     const meteorColorInput = <HTMLInputElement>document.getElementById("meteorcolor");
-    const numberOfMeteorsInput = <HTMLInputElement>document.getElementById("numberofmeteors");
-    if (meteorColorInput && numberOfMeteorsInput) {
+    if (meteorColorInput) {
         let color = getSpace().getSettings().meteorColor.toString(16);
         if (color.charAt(0) !== '#') {
             color = '#' + color;
         }
         meteorColorInput.value = color;
+    }
+}
+
+function loadNumberOfMeteorsInput() {
+    const numberOfMeteorsInput = <HTMLInputElement>document.getElementById("numberofmeteors");
+    if (numberOfMeteorsInput) {
         numberOfMeteorsInput.value = getSpace().getSettings().numberOfMeteors.toString();
     }
 }
 
-function saveSettings() {
-    const meteorColorInput = <HTMLInputElement>document.getElementById("meteorcolor");
-    const numberOfMeteorsInput = <HTMLInputElement>document.getElementById("numberofmeteors");
-    if (meteorColorInput && numberOfMeteorsInput) {
-        const settings = new SpaceSettings(<number><unknown>numberOfMeteorsInput.value, <number><unknown>meteorColorInput.value);
-        const space = getSpace();
-        space.useSettings(settings);
+function loadSpaceColorInput() {
+    const spaceColorInput = <HTMLInputElement>document.getElementById("spacecolor");
+    if (spaceColorInput) {
+        let color = getSpace().getSettings().spaceColor.toString(16);
+        if (color.charAt(0) !== '#') {
+            color = '#' + color;
+        }
+        spaceColorInput.value = color;
     }
 }
 
+function saveSettings() {
+    const settings = new SpaceSettings(
+        getMeteorColor(),
+        getNumberOfMeteors(),
+        getSpaceColor()
+    );
+    const space = getSpace();
+    space.useSettings(settings);
+}
+
+function getMeteorColor(): number {
+    const meteorColorInput = <HTMLInputElement>document.getElementById("meteorcolor");
+    if (meteorColorInput) {
+        return <number><unknown>meteorColorInput.value;
+    }
+    return 0xffffff;
+}
+
+function getNumberOfMeteors(): number {
+    const numberOfMeteorsInput = <HTMLInputElement>document.getElementById("numberofmeteors");
+    if (numberOfMeteorsInput) {
+        return <number><unknown>numberOfMeteorsInput.value;
+    }
+    return 100;
+}
+
+function getSpaceColor(): number {
+    const spaceColorInput = <HTMLInputElement>document.getElementById("spacecolor");
+    if (spaceColorInput) {
+        return <number><unknown>spaceColorInput.value;
+    }
+    return 0x000000;
+}
+
 export class SpaceSettings {
-    constructor(public numberOfMeteors: number,
-                public meteorColor: number) {
+    constructor(public meteorColor: number,
+                public numberOfMeteors: number,
+                public spaceColor: number) {
     }
 }
