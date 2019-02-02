@@ -33,6 +33,9 @@ function loadMeteorColorInput() {
         if (color.charAt(0) !== '#') {
             color = '#' + color;
         }
+        if (color.length !== 7) {
+            color = '#FFFFFF'
+        }
         meteorColorInput.value = color;
     }
 }
@@ -57,6 +60,9 @@ function loadSpaceColorInput() {
         let color = getSpace().getSettings().spaceColor.toString(16);
         if (color.charAt(0) !== '#') {
             color = '#' + color;
+        }
+        if (color.length !== 7) {
+            color = '#000000'
         }
         spaceColorInput.value = color;
     }
