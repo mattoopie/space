@@ -47,9 +47,8 @@ export class Space {
         });
     }
 
-    useSettings(settings: SpaceSettings) {
-        this.loadMeteors(settings.numberOfMeteors - this.settings.numberOfMeteors);
-        this.settings = settings;
+    reloadSettings() {
+        this.loadMeteors(this.settings.numberOfMeteors - this.meteors.length);
         this.scene.background = new Color(this.settings.spaceColor);
         this.meteors.forEach((meteor) => meteor.setColor(this.settings.meteorColor));
     }
@@ -70,7 +69,8 @@ export class Space {
         }
     }
     private addNewMeteor() {
-        let meteorPosition = randomSpherical().setLength(randFloat(50, Space.MAX_DISTANCE - 0.1)).add(this.camera.position);
+        // TODO fix spread
+        let meteorPosition = randomSpherical().setLength(randFloat(0, Space.MAX_DISTANCE - 0.1)).add(this.camera.position);
         let meteor = new Meteor(this.settings.meteorColor, this.settings.meteorSpeed, this.calcRadius());
         this.meteors.push(meteor);
         this.scene.add(meteor.object);
@@ -78,7 +78,6 @@ export class Space {
     }
 
     private resetMeteor(meteor: Meteor, distance: number) {
-        // let meteorPosition = new Vector3(this.calcX(), this.calcY(), -1000);
         let meteorPosition = meteor.object.position.clone().sub(this.camera.position);
         meteor.setPosition(meteorPosition.normalize().multiplyScalar(-distance).add(this.camera.position));
     }
