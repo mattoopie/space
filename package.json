@@ -11,12 +11,12 @@
   "dependencies": {
     "lodash": "^4.17.11",
     "random-spherical": "^1.1.2",
-    "three": "^0.125.0",
+    "three": "^0.165.0",
     "tslint-config-airbnb": "^5.11.1"
   },
   "devDependencies": {
-    "@types/lodash": "4.17.0",
-    "@types/webpack-env": "1.18.4",
+    "@types/lodash": "4.17.4",
+    "@types/webpack-env": "1.18.5",
     "clean-webpack-plugin": "4.0.0",
     "css-loader": "2.1.1",
     "gh-pages": "2.2.0",
